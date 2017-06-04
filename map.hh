@@ -4,7 +4,7 @@
 
 //Map
 template <class, class>
-struct Map {};
+struct Map;
 
 template <int...K, char...V>
 struct Map<List<int, K...>, List<char, V...>>
@@ -13,8 +13,7 @@ struct Map<List<int, K...>, List<char, V...>>
 };
 //Map_Get
 template <int, class>
-struct Map_Get
-{};
+struct Map_Get;
 
 template <int V>
 struct Map_Get<V, Map<List<int>, List<char>>>
@@ -38,8 +37,8 @@ struct Map_Get<F, Map<List<int, F, K...>, List<char, VF, V...>>>
 //TODO :  this is not optimized at all : remplace when possible
 //Map_Add
 template <int, char, class>
-struct Map_Add
-{};
+struct Map_Add;
+
 template <int K, char V, int...Ks, char...Vs>
 struct Map_Add<K, V, Map<List<int, Ks...>, List<char, Vs...>>>
 {
