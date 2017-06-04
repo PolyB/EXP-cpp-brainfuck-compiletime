@@ -9,7 +9,6 @@ struct Map;
 template <int...K, char...V>
 struct Map<List<int, K...>, List<char, V...>>
 {
-
 };
 //Map_Get
 template <int, class>
