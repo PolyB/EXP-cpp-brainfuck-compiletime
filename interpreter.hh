@@ -2,6 +2,7 @@
 #include "map.hh"
 #include "parenthesis.hh"
 #include "cstring.hh"
+#include "if.hh"
 
 template <char, class>
 struct IntNextInstr;
@@ -65,6 +66,49 @@ template <int Pos, int Ptr, int... ProgK, char... ProgV, int... TapeK,
     type;
 };
 
+// [
+template <int Pos, int Ptr, int... ProgK, char... ProgV, int... TapeK,
+          char... TapeV, char... Out>
+
+  struct IntNextInstr < '[',
+  Interpreter<Pos, Ptr, Map<List<int, ProgK...>, List<char, ProgV...>>,
+              Map<List<int, TapeK...>, List<char, TapeV...>>,
+              List<char, Out...>>>
+{
+  typedef typename Interpreter<
+    If<Map_Get<Ptr, Map<List<int, TapeK...>, List<char, TapeV...>>>::value ==
+         '\0',
+       int, Parenthesis_Get<
+               Pos, Map<List<int, ProgK...>, List<char, ProgV...>>>::value +
+             1,
+       Pos + 1>::value,
+    Ptr, Map<List<int, ProgK...>, List<char, ProgV...>>,
+    Map<List<int, TapeK...>, List<char, TapeV...>>, List<char, Out...>>::res
+    type;
+};
+
+// ]
+template <int Pos, int Ptr, int... ProgK, char... ProgV, int... TapeK,
+          char... TapeV, char... Out>
+
+  struct IntNextInstr < ']',
+  Interpreter<Pos, Ptr, Map<List<int, ProgK...>, List<char, ProgV...>>,
+              Map<List<int, TapeK...>, List<char, TapeV...>>,
+              List<char, Out...>>>
+{
+  typedef typename Interpreter<
+    If<Map_Get<Ptr, Map<List<int, TapeK...>, List<char, TapeV...>>>::value !=
+         '\0',
+       int,
+       Parenthesis_Get<Pos,
+                       Map<List<int, ProgK...>, List<char, ProgV...>>>::value +
+         1,
+       Pos + 1>::value,
+    Ptr, Map<List<int, ProgK...>, List<char, ProgV...>>,
+    Map<List<int, TapeK...>, List<char, TapeV...>>, List<char, Out...>>::res
+    type;
+};
+
 // .
 template <int Pos, int Ptr, int... ProgK, char... ProgV, int... TapeK,
           char... TapeV, char... Out>
@@ -99,6 +143,26 @@ template <int Pos, int Ptr, int... ProgK, char... ProgV, int... TapeK,
       typename Map_Add<
         Ptr,
         1 + Map_Get<Ptr, Map<List<int, TapeK...>, List<char, TapeV...>>>::value,
+        Map<List<int, TapeK...>, List<char, TapeV...>>>::type,
+      List<char, Out...>>::res type;
+};
+
+// -
+
+
+template <int Pos, int Ptr, int... ProgK, char... ProgV, int... TapeK,
+          char... TapeV, char... Out>
+
+  struct IntNextInstr < '-',
+  Interpreter<Pos, Ptr, Map<List<int, ProgK...>, List<char, ProgV...>>,
+              Map<List<int, TapeK...>, List<char, TapeV...>>,
+              List<char, Out...>>>
+{
+  typedef typename Interpreter<
+    Pos + 1, Ptr, Map<List<int, ProgK...>, List<char, ProgV...>>,
+      typename Map_Add<
+        Ptr,
+        Map_Get<Ptr, Map<List<int, TapeK...>, List<char, TapeV...>>>::value - 1,
         Map<List<int, TapeK...>, List<char, TapeV...>>>::type,
       List<char, Out...>>::res type;
 };
