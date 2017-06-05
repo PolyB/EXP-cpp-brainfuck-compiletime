@@ -66,6 +66,22 @@ template <int Pos, int Ptr, int... ProgK, char... ProgV, int... TapeK,
     type;
 };
 
+// <
+template <int Pos, int Ptr, int... ProgK, char... ProgV, int... TapeK,
+          char... TapeV, char... Out>
+
+  struct IntNextInstr < '<',
+  Interpreter<Pos, Ptr, Map<List<int, ProgK...>, List<char, ProgV...>>,
+              Map<List<int, TapeK...>, List<char, TapeV...>>,
+              List<char, Out...>>>
+{
+  typedef typename Interpreter<Pos + 1, Ptr - 1,
+                      Map<List<int, ProgK...>, List<char, ProgV...>>,
+                      Map<List<int, TapeK...>, List<char, TapeV...>>,
+                      List<char, Out...>>::res
+    type;
+};
+
 // [
 template <int Pos, int Ptr, int... ProgK, char... ProgV, int... TapeK,
           char... TapeV, char... Out>
