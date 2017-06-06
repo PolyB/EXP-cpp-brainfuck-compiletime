@@ -137,9 +137,8 @@ template <int Pos, int Ptr, int... ProgK, char... ProgV, int... TapeK,
   typedef typename Interpreter<
     Pos + 1, Ptr, Map<List<int, ProgK...>, List<char, ProgV...>>,
     Map<List<int, TapeK...>, List<char, TapeV...>>,
-    List<char,
-         Map_Get<Ptr, Map<List<int, TapeK...>, List<char, TapeV...>>>::value,
-         Out...>>::res
+    List<char, Out..., Map_Get<Ptr, Map<List<int, TapeK...>,
+                                        List<char, TapeV...>>>::value>>::res
     type;
 };
 
