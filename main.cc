@@ -1,15 +1,13 @@
-#include "list.hh"
-#include "cstring.hh"
-#include "interpreter.hh"
+#include "brainfuck.hh"
 #include <iostream>
 
 //this program should show a tilde
-typedef typename CString<'+', '+', '[', '+', '+', '>', '+', '<', ']', '>', '-',
-                         '.'>::asmap in;
 
-typedef Make_Interpreter<in>::type interpreter;
+//typedef CString<'+', '+', '[', '+', '+', '>', '+', '<', ']', '>', '-', '.'>in;
+//static const std::string out = Brainfuck<in>::result::asString();
 
-static const std::string out = interpreter::res::out();
+extern constexpr const char in[] = "++[++>+<]>-.";
+static const std::string out = Brainfuck<ConstChar<in>>::result::asString();
 
 int main()
 {
